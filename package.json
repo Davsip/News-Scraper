@@ -1,0 +1,31 @@
+{
+  "name": "news-scraper",
+  "version": "1.0.0",
+  "description": "hw",
+  "main": "server.js",
+  "scripts": {
+    "test": "s",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Davsip/News-Scraper.git"
+  },
+  "keywords": [
+    "sas"
+  ],
+  "author": "david",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Davsip/News-Scraper/issues"
+  },
+  "homepage": "https://github.com/Davsip/News-Scraper#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cheerio": "^1.0.0-rc.2",
+    "express": "^4.16.3",
+    "express-handlebars": "^3.0.0",
+    "mongoose": "^5.1.4",
+    "request": "^2.87.0"
+  }
+}
