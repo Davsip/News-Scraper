@@ -1,56 +1,57 @@
-// Dependencies
-var express = require("express");
-var bodyParser = require("body-parser");
-var mongoose = require("mongoose");
-var exphbs = require("express-handlebars");
-// Requiring Comment and Article models
-var Comment = require("./models/Comment.js");
-var Article = require("./models/Article.js");
-// Requiring routing controllers
-var htmlRouter = require("./controllers/html-routes.js");
-var articleRouter = require("./controllers/article-routes.js");
-// Scraping tools
-var request = require("request");
-var cheerio = require("cheerio");
-// Set mongoose to leverage built in JavaScript ES6 Promises
-mongoose.Promise = Promise;
+// import { mongo } from "mongoose";
 
-// Initialize Express
-var port = process.env.PORT || 3000;
+const express = require("express");
+const bodyParser = require("body-parser");
+const logger = require("morgan");
+const mongoose = require("mongoose");
+
+var axios = require("axios");
+var cheerio = require("cheerio");
+
+var db = require("./models");
+//Luis
+var PORT = 3000;
+
 var app = express();
 
-// Use body parser with the app
-app.use(bodyParser.urlencoded({
-  extended: false
-}));
 
-// Initialize Handlebars
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
-app.set("view engine", "handlebars");
+app.use(logger("dev"));
 
-// Routing
-app.use("/", htmlRouter);
-app.use("/", articleRouter);
+app.use(bodyParser.urlencoded({ extended: true }));
 
-// Make public a static dir
 app.use(express.static("public"));
 
-// Database configuration with mongoose
-var URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/news-scraper'; 
-mongoose.connect(URI);
-var db = mongoose.connection;
+mongoose.Promise = global.Promise;
+mongoose.connect(
+    process.env.MONGODB_URI || "mongodb://localhost/test",
+);
 
-// Show any mongoose errors
-db.on("error", function(error) {
-  console.log("Mongoose Error: ", error);
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(bodyParser.json());
+
+
+const exphbs = require("express-handlebars");
+
+app.engine("handlebars", exphbs({ defaultLayout: "main"}));
+
+app.set("view engine","handlebars");
+
+const routes = require("./controller/newsController.js");
+
+app.use(routes)
+
+
+ 
+
+
+
+app.listen(PORT, () => {
+    console.log(`app running on port ${PORT}!`);
 });
 
-// Once logged in to the db through mongoose, log a success message
-db.once("open", function() {
-  console.log("Mongoose connection successful.");
-});
 
-// Listen on port 3000
-app.listen(port, function() {
-  console.log("App running on port 3000!");
-});
+
+
+
+
